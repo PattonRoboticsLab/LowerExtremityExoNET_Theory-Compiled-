@@ -30,11 +30,15 @@ if S.case == 1.1
                 bodyPart = knee;
                 plotColor = S.ColorsT;
                 plotNum = 3;
-                S = findParameters(kneeFootIndex,p,element,S);
+                if S.EXONET.nJoints == 22
+                    S = findParameters(ankleIndex,p,element,S);
+                else
+                    S = findParameters(kneeFootIndex,p,element,S);
+                end
             end
             fprintf(strElement, element);
             
-            rPos = bodyPart + [S.Parameters(1)*sind(S.Parameters(2)) -S.Parameters(1)*cosd(S.Parameters(2))]; % R vector
+            rPos = bodyPart + [S.p(1)*sind(S.p(2)) -S.p(1)*cosd(S.p(2))]; % R vector
             plot([rPos(1) toe(1)], [rPos(2) toe(2)], 'Color', plotColor, 'Linewidth', S.LWs); %bungee
             plot([bodyPart(1) rPos(1)], [bodyPart(2) rPos(2)], 'Color', S.ColorsS(plotNum,:), 'Linewidth', S.LWr); %rod
             
@@ -66,22 +70,20 @@ if S.case == 1.1
             for i = 1:3:length(ppp)  % to print the values of the optimal parameters
                 fprintf('\n Element %d\n',n)
                 fprintf('\n r = %4.3f m   theta = %4.2f deg   L0 = %4.3f m\n',ppp(i),ppp(i+1),ppp(i+2))
-                S.Parameters(n,:) = ppp(i:i+2);
+                S.p(n,:) = ppp(i:i+2);
                 n = n+1;
             end
-            lenElement = size(S.Parameters);
+            lenElement = size(S.p);
             i = 1;
             while i <= lenElement(1,1)
                 if (mod(i, 2) == 0)
                     element_str = "Knee " + num2str(i);
-                    labelColor{i} = S.ColorsT; 
                 else
-                    element_str = "Ankle " + num2str(i);
-                    labelColor{i} =  S.ColorsC;                     
+                    element_str = "Ankle " + num2str(i);           
                 end                    
                 
                 % Assuming S is a struct containing Parameters for each element
-                Label = sprintf('%s: r=%.3f m, theta=%.2f deg, L=%.3f m', element_str, S.Parameters(i,1), S.Parameters(i,2), S.Parameters(i,3));
+                Label = sprintf('%s: r=%.3f m, theta=%.2f deg, L=%.3f m', element_str, S.p(i,1), S.p(i,2), S.p(i,3));
                 % Combine bungee and rod labels with newline
                 legendLabels{i} = [Label, newline];
                 

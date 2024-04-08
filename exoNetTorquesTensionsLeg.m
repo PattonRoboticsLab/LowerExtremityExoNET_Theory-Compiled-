@@ -46,7 +46,7 @@ if S.EXONET.nJoints == 22
         for element = 1:S.EXONET.nElements
         S = findParameters(ankleIndex, p, element, S);
         S = tauMarionetLeg(S, i, 1);
-        S.EXONET.tau(i,1,element) = S.tau;
+        S.EXONET.tau(i,1,element) = S.tau(element);
         S.EXONET.T(i,1,element) = S.T;
         S.EXONET.Tdist(i,1,element) = S.Tdist;
         

@@ -63,10 +63,7 @@ if S.EXONET.nJoints == 2
     TAUs(i,1) = TAUs(i,1) + taus(2); % torque created by the knee-toe MARIONET on the ankle
     TAUs(i,2) = taus(1); % torque created by the knee-toe MARIONET on the knee
 end
-
-
 end
-
 
 if S.GridPHIsVal ~= 1
     S.TAUs = TAUs;

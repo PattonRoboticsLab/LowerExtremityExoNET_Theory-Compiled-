@@ -2,7 +2,7 @@
 function S = designOpto(S)
 fg = figure();
 fg.WindowState = 'maximized'; % create maximized empty figure
-
+S.GridPHIsVal = 0; %for leg opto?
 
 RLoHi = [0.00 0.30];     % R low and high range in [m]
 thetaLoHi = [-360 360];  % theta low and high range in [deg]
