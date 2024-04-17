@@ -28,19 +28,17 @@ elseif flag == 1 %2-joint
     rVect = [r*sind(theta)  -r*cosd(theta)  0];                            % R vector
     knee = [Ls(1)*sind(phis(1))  -Ls(1)*cosd(phis(1))  0];                 % knee position
     ankle = [knee(1) + Ls(2)*sind(phis(1)-phis(2)), ...                    % ankle position
-        knee(2) - Ls(2)*cosd(phis(1)-phis(2)), ...
-        0];
+        knee(2) - Ls(2)*cosd(phis(1)-phis(2)), 0];
     foot = [ankle(1) + Ls(3)*sind(phis(3)), ...                            % foot position
-        ankle(2) - Ls(3)*cosd(phis(3)), ...
-        0];
+        ankle(2) - Ls(3)*cosd(phis(3)), 0];
     knee2foot = foot - knee;                                               % knee-foot vector
     knee2ankle = ankle - knee;                                             % knee-ankle vector
     ankle2foot = foot - ankle;                                             % ankle-foot vector
     Tdir = rVect - knee2foot;                                              % MARIONET vector
-    S.Tdist = norm(Tdir);                                           % magnitude of MARIONET vector
-    Tdir = Tdir./S.Tdist;                                           % MARIONET unit vector
+    S.Tdist = norm(Tdir);                                                  % magnitude of MARIONET vector
+    Tdir = Tdir./S.Tdist;                                                  % MARIONET unit vector
     if S.case ~= 3
-    S.T = S.TENSION2j(L0,S.Tdist);                           % magnitude of the Tension exerted by the MARIONET
+    S.T = S.TENSION2j(L0,S.Tdist);                                         % magnitude of the Tension exerted by the MARIONET
     else
         S.T = S.TENSION(L0, S.Tdist);
     end
