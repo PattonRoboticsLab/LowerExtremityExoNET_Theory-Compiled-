@@ -36,13 +36,11 @@ S = exoNetTorquesLeg(S.bestP,S); % initial guess for the solution
 
 %% Set the plot
 clf % to reset the figure
-%title(ProjectName)
-
 if S.case == 1.1
     drawMan;
     plotAngleTorque(S);
 elseif S.case == 1.2
-    drawBodyLeg(S.BODY);
+    drawBodyLeg(S);
     plotVectFieldLeg(S.PHIs,S.TAUsDESIRED,'r'); % to plot the desired torque field in red   
     plotVectFieldLeg(S.PHIs,S.TAUs,0.9*[1 1 1]); % to plot the initial guess in grey
     plotVectFieldLeg(S.PHIs, S.TAUsDESIRED,'r');  % to plot the desired torque field in red    
@@ -107,8 +105,9 @@ costs(TRY+1) = c; % vector collecting the cost at each try
 %% Update the plots
 % Draw the ExoNET and plot the torques
 clf % to reset the figure
-figure('WindowState', 'maximized');
+set(gcf, 'WindowState', 'maximized'); %set new figure to be fullscreen
 subplot(1,2,1)
+S.end = true;
 
 if S.case == 1.1
     drawMan;
@@ -116,14 +115,13 @@ if S.case == 1.1
     S = exoNetTorquesTensionsLeg(S.bestP,S); % to calculate the final solution
     title([ProjectName ', RMSE = ' num2str(meanErr) ' Nm']); % to show the average error
     drawnow; pause(0.1) % to update the screen
-    S.end = true;
     S = drawExonetsLeg(S.bestP, S); % to draw the ExoNET line segments
     
     Residual = S.TAUsDESIRED - S.TAUs; % to calculate the Residual
     plotAngleTorque(S,'exOn');
 
 elseif S.case == 1.2
-    drawBodyLeg(S.BODY);
+    drawBodyLeg(S);
     drawExonetsLeg(S.bestP,S);          % to draw the ExoNET line segments
     
     S = exoNetTorquesTensionsLeg(S.bestP,S,'plotIt'); % to calculate the final solution
@@ -133,8 +131,8 @@ elseif S.case == 1.2
     plotVectFieldLeg(S.PHIs, S.TAUs,'b');        % to plot the best solution in blue
     
     % Adjust axis and title
-    subplot(1,2,2); axis(ax2); % to zoom the frame
-    subplot(1,2,1); axis(ax1); % to zoom the frame
+    subplot(1,2,2); axis(); % to zoom the frame
+    subplot(1,2,1); axis(); % to zoom the frame
     title([ProjectName ', Average Error = ' num2str(meanErr)]); % to show the average error
     drawnow; pause(0.1) % to update the screen
 elseif S.case == 2
