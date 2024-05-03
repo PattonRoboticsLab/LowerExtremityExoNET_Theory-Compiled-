@@ -1,3 +1,8 @@
+% ***********************************************************************
+% This is the main code to find the best optimization parameters (r, theta,
+% and L0) for a specific ExoNET solution
+% ***********************************************************************
+
 %% CREATE GRID ACROSS THE PARAMETERS SPACE
 function S = designOpto(S)
 fg = figure();
@@ -152,7 +157,8 @@ colors = {'#d17006','#a267d0','#00a672',... % x,y,z-axis
 subplot(2,5,[1 2 6 7])
 u = 1;
 for i = 1:length(Xgrid):length(Grid)
-    plot3(Grid(i:i+length(Xgrid)-1,1),Grid(i:i+length(Xgrid)-1,2),Grid(i:i+length(Xgrid)-1,3),'-o','Color','k','MarkerSize',10,'MarkerFaceColor',colors{u})
+    plot3(Grid(i:i+length(Xgrid)-1,1),Grid(i:i+length(Xgrid)-1,2),...
+        Grid(i:i+length(Xgrid)-1,3),'-o','Color','k','MarkerSize',10,'MarkerFaceColor',colors{u})
     u = u + 1;
     drawnow;
     pause(1);
@@ -186,7 +192,8 @@ end
 subplot(2,5,[1 2 6 7])
 w = 0;
 for o = 1:npp:length(GridRef)
-    plot3(GridRef(1+w:npp+w,1),GridRef(1+w:npp+w,2),GridRef(1+w:npp+w,3),'-','Color','b','MarkerSize',10,'MarkerFaceColor','#D9FFFF')
+    plot3(GridRef(1+w:npp+w,1),GridRef(1+w:npp+w,2),GridRef(1+w:npp+w,3),...
+        '-','Color','b','MarkerSize',10,'MarkerFaceColor','#D9FFFF')
     hold on
     w = w + npp;
 end
@@ -293,7 +300,8 @@ for i = 1:length(Grid)
     if mod(i,length(Xgrid)) == 1
         u = u + 1;
     end
-    plot(TAUs(:,1,i),TAUs(:,2,i),'^-','LineWidth',lineWidth,'Color',colors{u},'MarkerSize',markerSize,'MarkerFaceColor',colors{u})
+    plot(TAUs(:,1,i),TAUs(:,2,i),'^-','LineWidth',lineWidth,'Color',...
+        colors{u},'MarkerSize',markerSize,'MarkerFaceColor',colors{u})
 %     drawnow;
 %     pause(1);
     hold on
@@ -308,7 +316,8 @@ plot(S.TAUs(:,1),S.TAUs(:,2),'^-','LineWidth',lineWidth,'Color','b','MarkerSize'
 
 
 % PLOT DESIRED TORQUE
-plot(S.TAUsDESIRED(:,1),S.TAUsDESIRED(:,2),'^-','LineWidth',lineWidth,'Color','r','MarkerSize',markerSize,'MarkerFaceColor','r')
+plot(S.TAUsDESIRED(:,1),S.TAUsDESIRED(:,2),'^-','LineWidth',lineWidth,...
+    'Color','r','MarkerSize',markerSize,'MarkerFaceColor','r')
 xlabel({'Ankle Torque [Nm]';'plantarflexion    dorsiflexion'},'FontSize',15);
 ylabel({'Knee Torque [Nm]';'flexion    extension'},'FontSize',15);
 %text(TAUsDESIRED(1,1),TAUsDESIRED(1,2),'HSR','FontSize',12,'FontWeight','bold');

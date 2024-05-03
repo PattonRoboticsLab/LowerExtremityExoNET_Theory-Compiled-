@@ -1,5 +1,5 @@
 % ***********************************************************************
-% Find the parameters for the Element
+% Find the parameters (r, theta, L0) for the Element at that instance 
 % ***********************************************************************
 
 function S = findParameters(ind,p,element,S)
