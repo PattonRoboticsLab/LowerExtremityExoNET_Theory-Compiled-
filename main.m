@@ -19,7 +19,7 @@ fieldType = menu('Choose a field to approximate:', ...
     'EXIT');
 
 close all
-S.end = false;
+S.end = false; % when it is at the end of optimzation
 
 switch fieldType
     case 1 % Knee-Ankle or Hip-Knee
