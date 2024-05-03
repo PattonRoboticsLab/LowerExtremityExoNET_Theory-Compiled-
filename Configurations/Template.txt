@@ -1,0 +1,17 @@
+Lengths: [0.46 0.42 0.26]
+Pose: [10 20 90]
+RLoHi: [0.1 0.3]
+thetaLoHi: [200 360]
+L0LoHi: [0.1 0.2]
+LL0LoHi: [0.8 1]
+Mass: 70.000000
+nParameters: 3
+K2j: 600.000000
+K1j: 600.000000
+K: 0.000000
+nElements: 1
+TRIES: 5
+Units: Metric
+ANTI: 0
+Spring: 1
+nJoints: 2

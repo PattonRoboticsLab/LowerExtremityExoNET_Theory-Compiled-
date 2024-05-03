@@ -9,15 +9,25 @@ fg = figure();
 fg.WindowState = 'maximized'; % create maximized empty figure
 S.GridPHIsVal = 0; %for leg opto?
 
-RLoHi = [0.00 0.30];     % R low and high range in [m]
-thetaLoHi = [-360 360];  % theta low and high range in [deg]
-L0LoHi = [0.40 0.70];    % L0 low and high range in [m] for 1-joint Compression Springs
-np = 2;  % number of points across each parameter
+% RLoHi = [0.00 0.30];     % R low and high range in [m]
+% thetaLoHi = [-360 360];  % theta low and high range in [deg]
+% L0LoHi = [0.40 0.70];    % L0 low and high range in [m] for 1-joint Compression Springs
+% np = 2;  % number of points across each parameter
+% % EXONET SOLUTION
+% p = [0.0423247630553336,282.70,0.628591162699065];
 
+RLoHi = S.RLoHi;         % R low and high range in [m]
+thetaLoHi = S.thetaLoHi; % theta low and high range in [deg]
+L0LoHi = S.L0LoHi;       % L0 low and high range in [m] for 1-joint Compression springs
+%LL0LoHi = S.LL0LoHi;     %L0 low and high range in [m] for 2-joint Compression springs
+np = 2;                  % # of points across each parameter
 
-% EXONET SOLUTION
-p = [0.0423247630553336,282.70,0.628591162699065];
-
+%ExoNET Solution
+if height(S.p) > 1
+    p = S.p(1,:);   %Take first solution for now. Implement a 2 solution
+else
+    p = S.p;
+end
 
 % GENERATE PARAMETER VALUES USING A STAR FROM THE BEST EXONET SOLUTION
 if p(1) < (RLoHi(2)-RLoHi(1))/2
@@ -70,8 +80,6 @@ end
 R = sort(R);
 theta = sort(theta);
 L0 = sort(L0);
-
-
 
 % BUILD 3D GRID POINTS
 Xgrid = R;      % x-axis of the grid
@@ -227,64 +235,12 @@ for t = 0:2
 end
 
 %hXL = xlabel('R (lever arm length) [m]','Rotation',23,'FontSize',16);
-hXL = xlabel('R (lever arm length) [m]','FontSize',16);
+xlabel('R (lever arm length) [m]','FontSize',16);
 %hXL.Position = [0.2 -360 0];
 %hYL = ylabel('theta (lever arm angle) [deg]','Rotation',-35,'FontSize',16);
-hYL = ylabel('theta (lever arm angle) [deg]','FontSize',16);
+ylabel('theta (lever arm angle) [deg]','FontSize',16);
 %hYL.Position = [0 360 0];
 zlabel('L0 (spring resting length) [m]','FontSize',16);
-
-
-%% EXONET TORQUE
-% BODY
-S.BODY.Mass = 70; % body mass in [kg] for a body height of 1.70 m
-S.BODY.Lengths = [0.46 0.42 0.26]; % segments lengths (thigh, shank, foot) in [m]
-
-% EXONET
-S.EXONET.nJoints = 22;    % 11 = only ankle-toe springs
-                        % 22 = only knee-toe springs
-                        % 2 = both ankle-toe and knee-toe springs
-S.EXONET.nParameters = 3; % number of parameters for each spring
-S.EXONET.nElements = 1;   % number of stacked elements per joint
-S.EXONET.K = 1000;        % springs stiffness in [N/m]
-
-%S.TENSION = @(L0,L)   (S.EXONET.K.*(L-L0)).*((L-L0)>0).*((L*L0)>0); % Linear Tension Springs
-S.TENSION = @(L0,L)   (S.EXONET.K.*(L-L0)).*((L-L0)<0).*((L*L0)>0); % Linear Compression Springs
-
-% IMPORT GAIT DATA
-beatrice_gait_hip_knee_ankle = xlsread('beatrice_gait_hip_knee_ankle.xlsx'); % walk cycle parameters for the right leg
-                                                  % (from Bovi et al.)
-S.percentCycle = beatrice_gait_hip_knee_ankle(:,1); % percentage of gait cycle
-S.Hip.Angle = beatrice_gait_hip_knee_ankle(:,2);    % hip angles in [deg]
-S.Knee.Angle = beatrice_gait_hip_knee_ankle(:,3);   % knee angles in [deg]
-S.Ankle.Angle = beatrice_gait_hip_knee_ankle(:,4);  % ankle angles in [deg]
-S.Hip.Moment = beatrice_gait_hip_knee_ankle(:,5);   % hip moments of force in [Nm/kg]
-S.Knee.Moment = beatrice_gait_hip_knee_ankle(:,6);  % knee moments of force in [Nm/kg]
-S.Ankle.Moment = beatrice_gait_hip_knee_ankle(:,7); % ankle moments of force in [Nm/kg]
-
-phis = [S.Hip.Angle, S.Hip.Angle+S.Knee.Angle, 90-(S.Knee.Angle+S.Ankle.Angle)]; % angles in [deg]
-tausD = S.Ankle.Moment.*(-1).*S.BODY.Mass; % ankle moments of force in [Nm]
-tausKnee = S.Knee.Moment.*S.BODY.Mass; % knee moments of force in [Nm]
-
-% ENTIRE GAIT CYCLE
-%S.PHIs = [S.Hip.Angle, S.Hip.Angle+S.Knee.Angle, 90-(S.Knee.Angle+S.Ankle.Angle)]; % angles in [deg]
-%S.TAUsDESIRED = S.Ankle.Moment.*(-1).*S.BODY.Mass; % moments of force in [Nm]
-
-% STANCE PHASE
-%S.PHIs = [S.Hip.Angle(1:63), S.Hip.Angle(1:63)+S.Knee.Angle(1:63), 90-(S.Knee.Angle(1:63)+S.Ankle.Angle(1:63))]; % angles in [deg]
-%S.TAUsDESIRED = S.Ankle.Moment(1:63).*(-1).*S.BODY.Mass; % moments of force in [Nm]
-
-% LATE STANCE PHASE
-S.PHIs = [S.Hip.Angle(9:63), S.Hip.Angle(9:63)+S.Knee.Angle(9:63), 90-(S.Knee.Angle(9:63)+S.Ankle.Angle(9:63))]; % angles in [deg]
-S.TAUsDESIRED = [S.Ankle.Moment(9:63).*(-1).*S.BODY.Mass, S.Knee.Moment(9:63).*S.BODY.Mass]; % moments of force in [Nm]
-%
-% 4 PERIODS OF STANCE PHASE
-% Initial contact (0%–2% of the Gait Cycle)
-% Loading response (2%–12% of the Gait Cycle)
-% Midstance (12%–31% of the Gait Cycle)
-% Preswing (50%–60% of the Gait Cycle)
-GP = [9 26 46 63];
-
 
 % COMPUTE AND PLOT EXONET TORQUE
 TAUs = zeros(length(S.PHIs),2,length(Grid));
@@ -302,8 +258,7 @@ for i = 1:length(Grid)
     end
     plot(TAUs(:,1,i),TAUs(:,2,i),'^-','LineWidth',lineWidth,'Color',...
         colors{u},'MarkerSize',markerSize,'MarkerFaceColor',colors{u})
-%     drawnow;
-%     pause(1);
+
     hold on
     axis equal
     grid on
@@ -313,7 +268,6 @@ end
 % PLOT BEST EXONET TORQUE
 S = exoNetTorquesLeg(p,S);
 plot(S.TAUs(:,1),S.TAUs(:,2),'^-','LineWidth',lineWidth,'Color','b','MarkerSize',markerSize,'MarkerFaceColor','b')
-
 
 % PLOT DESIRED TORQUE
 plot(S.TAUsDESIRED(:,1),S.TAUsDESIRED(:,2),'^-','LineWidth',lineWidth,...
@@ -325,12 +279,9 @@ ylabel({'Knee Torque [Nm]';'flexion    extension'},'FontSize',15);
 %text(TAUsDESIRED(end,1),TAUsDESIRED(end,2),'TOR','FontSize',12,'FontWeight','bold');
 %title('INITIAL CONTACT - LOADING RESPONSE - MIDSTANCE - PRESWING','FontSize',13);
 
-
 % SAVE FIGURE WITH HIGH RESOLUTION
 % f = gcf;
 % exportgraphics(f,'result.jpg','Resolution',1000)
-
-
 %% SCORE
 ankleVar = zeros(length(S.PHIs),length(colors));
 kneeErr = zeros(length(S.PHIs),length(colors));

@@ -12,6 +12,7 @@ fprintf('\n\n\n\n robustOpto~~\n')
 drawnow    % to update the figures in the graphic screen
 pause(0.1) % to pause for 0.1 seconds before continuing
 S.GridPHIsVal = 0; %for leg opto?
+S = drawVars(S);
 
 if S.case == 1.1
     ProjectName = 'Ankle ExoNET';
@@ -36,6 +37,7 @@ S = exoNetTorquesLeg(S.bestP,S); % initial guess for the solution
 
 %% Set the plot
 clf % to reset the figure
+set(gcf, 'WindowState', 'maximized'); %set new figure to be fullscreen
 if S.case == 1.1
     drawMan;
     plotAngleTorque(S);
@@ -108,6 +110,11 @@ clf % to reset the figure
 set(gcf, 'WindowState', 'maximized'); %set new figure to be fullscreen
 subplot(1,2,1)
 S.end = true;
+uicontrol('Style', 'pushbutton', 'String', 'Main Menu','Position',...
+    [100 100 100 50],'Callback', @MainMenu, 'BackgroundColor', [0.929 0.835 0.0]);
+uicontrol('Style', 'pushbutton', 'String', 'Restart','Position',...
+    [100 40 100 50],'Callback', @Restart, 'BackgroundColor', [0.929 0.835 0.0]);
+
 
 if S.case == 1.1
     drawMan;
@@ -117,7 +124,7 @@ if S.case == 1.1
     drawnow; pause(0.1) % to update the screen
     S = drawExonetsLeg(S.bestP, S); % to draw the ExoNET line segments
     
-    Residual = S.TAUsDESIRED - S.TAUs; % to calculate the Residual
+    S.Residual = S.TAUsDESIRED - S.TAUs; % to calculate the Residual
     plotAngleTorque(S,'exOn');
 
 elseif S.case == 1.2
@@ -126,7 +133,7 @@ elseif S.case == 1.2
     
     S = exoNetTorquesTensionsLeg(S.bestP,S,'plotIt'); % to calculate the final solution
     
-    Residual = S.TAUsDESIRED - S.TAUs;                        % to calculate the Residual
+    S.Residual = S.TAUsDESIRED - S.TAUs;                        % to calculate the Residual
     plotVectFieldLeg(S.PHIs,S.TAUsDESIRED,'r'); % to plot the desired torque field in red
     plotVectFieldLeg(S.PHIs, S.TAUs,'b');        % to plot the best solution in blue
     
@@ -149,5 +156,17 @@ elseif S.case == 2
     S = drawExonetsLeg(S.bestP, S); % to draw the ExoNET line segments
     title([ProjectName ', Average Error = ' num2str(meanErr)],'FontSize',14) % to show the average error
 end
+
+    function MainMenu(~,~)
+        S.switch = true;
+        GUI(S);
+    end
+
+    function Restart(~,~)
+        clear;clc;close all;
+        S.end = false;    %indication for last optimization 
+        S.switch = false; %indication for which buttons to enable on main tab
+        GUI(S);
+    end
 
 end

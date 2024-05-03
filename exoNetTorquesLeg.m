@@ -15,8 +15,8 @@ else
 end
 TAUs = zeros(size(PHIs,1),2); % initialization
 
-ankleIndex = 1;
-kneeToeIndex = S.EXONET.nParameters*S.EXONET.nElements+1;
+%ankleIndex = 1;
+%kneeToeIndex = S.EXONET.nParameters*S.EXONET.nElements+1;
 
 % Find torques
 for i = 1:size(PHIs,1)
@@ -24,7 +24,7 @@ for i = 1:size(PHIs,1)
 if S.EXONET.nJoints == 11
     tau = 0;
     for element = 1:S.EXONET.nElements
-        S = findParameters(ankleIndex,p,element, S);
+        S = findParameters(S.ankleIndex,p,element, S);
         S = tauMarionetLeg(S, i, 0);
         tau = tau + S.tau;
     end
@@ -35,8 +35,7 @@ end
 if S.EXONET.nJoints == 22
     taus = [0 0];
     for element = 1:S.EXONET.nElements
-        %S = findParameters(kneeToeIndex,p, element,S);
-        S = findParameters(ankleIndex, p, element, S);
+        S = findParameters(S.ankleIndex, p, element, S);
         S = tauMarionetLeg(S, i, 1);
         taus = taus + S.tau;
     end
@@ -48,7 +47,7 @@ end
 if S.EXONET.nJoints == 2
     tau = 0;
     for element = 1:S.EXONET.nElements
-        S = findParameters(ankleIndex,p, element,S);
+        S = findParameters(S.ankleIndex,p, element,S);
         S = tauMarionetLeg(S, i, 0);
         tau = tau + S.tau;
     end
@@ -56,7 +55,7 @@ if S.EXONET.nJoints == 2
     
     taus = [0 0];
     for element = 1:S.EXONET.nElements
-        S = findParameters(kneeToeIndex,p, element,S);
+        S = findParameters(S.kneeToeIndex,p, element,S);
         S = tauMarionetLeg(S, i, 1);
         taus = taus + S.tau;
     end

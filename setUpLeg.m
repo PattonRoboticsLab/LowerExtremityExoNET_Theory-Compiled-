@@ -5,7 +5,7 @@
 function S = setUpLeg(S)
 %% BEGIN
 % Define Variables
-S = setLegParameters(S);
+%S = GUI(S);
 
 %Colors for graphics
 S.ColorsS = [0.5 0.7 1; 0.1 1 0.2; 1 0.6 0.3]; % 3 distinct RGB color spaces for the springs

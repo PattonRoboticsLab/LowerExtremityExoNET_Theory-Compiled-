@@ -15,7 +15,7 @@ if flag == 0 %1-joint
     rVect = [r*sind(theta) -r*cosd(theta)  0];                             % R vector
     lVect = [L*sind(phi)   -L*cosd(phi)    0];                             % anatomical segment vector (hip-knee or knee-ankle)
     Tdir = rVect - lVect;                                                  % MARIONET vector
-    S.Tdist = norm(Tdir);                                           % magnitude of MARIONET vector
+    S.Tdist = norm(Tdir);                                                  % magnitude of MARIONET vector
     Tdir = Tdir./S.Tdist;                                           % MARIONET unit vector
     
     S.T = S.TENSION1j(L0,S.Tdist);                           % magnitude of the Tension exerted by the MARIONET

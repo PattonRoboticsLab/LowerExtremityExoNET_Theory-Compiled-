@@ -25,7 +25,7 @@ if S.case == 1.1
                 if S.EXONET.nJoints == 22
                     S = findParameters(S.ankleIndex,p,element,S);
                 else
-                    S = findParameters(S.kneeFootIndex,p,element,S);
+                    S = findParameters(S.kneeToeIndex,p,element,S);
                 end
             end
             fprintf(strElement, element);

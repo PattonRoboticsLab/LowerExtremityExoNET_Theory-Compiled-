@@ -9,7 +9,7 @@ if S.case == 1.1 %knee-ankle
     S.ankle = [0.02  -1.03];
     S.toe =   [0.30367  -1.129];    
     S.ankleIndex = 1;
-    S.kneeFootIndex = S.EXONET.nParameters*S.EXONET.nElements+1;
+    S.kneeToeIndex = S.EXONET.nParameters*S.EXONET.nElements+1;
 elseif S.case == 1.2 %Hip-ankle
     S.hip = [0, 0]; % HIP position
     S.knee = [S.BODY.Lengths(1)*sind(S.PHIs(1)), ... % KNEE position
