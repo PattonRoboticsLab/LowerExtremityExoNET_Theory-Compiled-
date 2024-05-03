@@ -7,7 +7,6 @@
 % "A multiple-task gait analysis approach: Kinematic kinetic and EMG
 % reference data for healthy young and adult subjects"
 % ***********************************************************************
-
 clear;clc;close all;
 % BEGIN
 fprintf('\n\n\n\n MAIN SCRIPT~~\n')
