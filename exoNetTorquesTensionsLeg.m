@@ -68,7 +68,7 @@ if S.EXONET.nJoints == 2
     
     taus = [0 0];
     for element = 1:S.EXONET.nElements
-        S = findParameters(S.kneeToeIndex,p, element, S);
+        S = findParameters(S.kneeFootIndex,p, element, S);
         S = tauMarionetLeg(S, i, 1);
         S.EXONET.tau(i,2,element) = S.tau(element);
         S.EXONET.T(i,2,element) = S.T;
