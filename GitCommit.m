@@ -27,8 +27,8 @@ function GitCommit(message)
     [~ , currBranch] = system('git rev-parse --abbrev-ref HEAD');
     currBranch = strtrim(currBranch);
     
-        % Ask user if they want to push changes to currBranch (Y/N)
-    pushCurrBranch = input(['Do you want to push changes to current branch ', currBranch, '? (Y/N): '], 's');
+    % Ask user if they want to push changes to currBranch (Y/N)
+    pushCurrBranch = input(['Do you want to push changes to current branch: ', currBranch, '? (Y/N): '], 's');
     if strcmpi(pushCurrBranch, 'Y')
         system('git push -u origin HEAD'); % Push the committed changes to the current branch
         disp(['Changes pushed to branch ', currBranch]);
