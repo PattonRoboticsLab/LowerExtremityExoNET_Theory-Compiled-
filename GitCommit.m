@@ -53,6 +53,8 @@ function GitCommit(message)
             % Validate the input
             if isscalar(branchIndex) && branchIndex >= 1 && branchIndex <= numel(branches)
                 branchName = branches{branchIndex};
+                % Switch to the selected branch
+                system(['git checkout ', branchName]);
                 % Push changes to the selected branch
                 system(['git push -u origin ', branchName]);
                 disp(['Changes pushed to branch ', branchName]);
