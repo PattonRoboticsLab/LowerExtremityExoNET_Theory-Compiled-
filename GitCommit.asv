@@ -66,7 +66,7 @@ function GitCommit(message)
     %ask user if they want to push changes to currBranch (Y/N)
     %if yes, perform next line  
     
-    %system('git push -u origin HEAD'); % Push the committed changes to the 'master' branch
+    system('git push -u origin HEAD'); % Push the committed changes to the 'master' branch
     
     %if no, list all avaiable branches. ask user if they want to push
     %changes to any available branch (Y/N)
