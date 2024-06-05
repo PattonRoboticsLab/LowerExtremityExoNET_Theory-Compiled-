@@ -19,8 +19,9 @@ function GitCommit(message)
         error('No email is associated with Git.');
     end
     
-%=========================================================================%    
+%=========================================================================% 
     % If all checks pass:
+    system('git pull') %pull any recent changes from online
     system('git add .'); % Add all files to the staging area for commit
     
     % Construct the Git commit command with the provided message
