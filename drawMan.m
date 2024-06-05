@@ -2,6 +2,7 @@
 % Draw the Body on the background based on the angles of BODY.pose
 % ***********************************************************************
 
+%TEST TEST TEST
 function drawMan
 subplot(1,2,1)
 bodyColor = [0.8, 0.7, 0.6]; % RGB color space for shaded body parts

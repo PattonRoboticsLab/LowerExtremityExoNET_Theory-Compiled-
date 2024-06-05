@@ -6,17 +6,8 @@ function S = exoNetTorquesTensionsLeg(p,S,plotIt)
 
 %% Setup
 if ~exist('plotIt','var'); plotIt = 0; end   % if plotIt argument not passed
-ColorsS = [0.5 0.7 1; 0.1 1 0.2; 1 0.6 0.3]; % 3 distinct RGB color spaces for the springs
-Colors = [1 0.87843 0.40]; % yellow springs
-ColorsC = [0.0235294 0.8392157 0.627451]; % green 1-joint springs
-ColorsT = [1 0.572549 0.545098]; % pink 2-joint springs
-
 TAUs = zeros(size(S.PHIs,1),2); % initialization
-
-ankleIndex = 1;
-kneeToeIndex = S.EXONET.nParameters*S.EXONET.nElements+1;
-
-if plotIt; cf = gcf(); figure; end           % add cf and create another figure
+%if plotIt; cf = gcf(); figure; end           % add cf and create another figure
 
 
 %% Find torques
@@ -25,14 +16,14 @@ for i = 1:size(S.PHIs,1)
 if S.EXONET.nJoints == 11
     tau = 0;
     for element = 1:S.EXONET.nElements
-        S = findParameters(ankleIndex, p, element, S);
+        S = findParameters(S.ankleIndex, p, element, S);
         S = tauMarionetLeg(S, i, 0);
         S.EXONET.tau(i,1,element) = S.tau;
         S.EXONET.T(i,1,element) = S.T;
         S.EXONET.Tdist(i,1,element) = S.Tdist;
         
         if plotIt
-            plot(ColorsC, S.Tension1j, i, S, 1); 
+            plot(S.ColorsC, S.Tension1j, i, S, 1); 
         end
         tau = tau + S.tau; % + element's torque
     end
@@ -44,14 +35,14 @@ if S.EXONET.nJoints == 22
     taus = [0 0];
     
         for element = 1:S.EXONET.nElements
-        S = findParameters(ankleIndex, p, element, S);
+        S = findParameters(S.ankleIndex, p, element, S);
         S = tauMarionetLeg(S, i, 1);
-        S.EXONET.tau(i,1,element) = S.tau(element);
+        S.EXONET.tau(i,1,element) = S.tau(2);
         S.EXONET.T(i,1,element) = S.T;
         S.EXONET.Tdist(i,1,element) = S.Tdist;
         
         if plotIt
-            plot(ColorsT, S.Tension2j, i, S, 1);
+            plot(S.ColorsT, S.Tension2j, i, S, 1);
         end
         taus = taus + S.tau; % + element's torque
         end
@@ -62,14 +53,14 @@ end
 if S.EXONET.nJoints == 2
     tau = 0;
     for element = 1:S.EXONET.nElements
-        S = findParameters(ankleIndex,p, element, S);
+        S = findParameters(S.ankleIndex,p, element, S);
         S = tauMarionetLeg(S, i, 0);
         S.EXONET.tau(i,1,element) = S.tau;
         S.EXONET.T(i,1,element) = S.T;
         S.EXONET.Tdist(i,1,element) = S.Tdist;
         
         if plotIt
-            plot(ColorsC, S.Tension1j, i, S, 1);
+            plot(S.ColorsC, S.Tension1j, i, S, 1);
         end
         tau = tau + S.tau;
     end
@@ -77,14 +68,14 @@ if S.EXONET.nJoints == 2
     
     taus = [0 0];
     for element = 1:S.EXONET.nElements
-        S = findParameters(kneeToeIndex,p, element, S);
+        S = findParameters(S.kneeFootIndex,p, element, S);
         S = tauMarionetLeg(S, i, 1);
-        S.EXONET.tau(i,2,element) = S.tau(element);
+        S.EXONET.tau(i,2,element) = S.tau(2);
         S.EXONET.T(i,2,element) = S.T;
         S.EXONET.Tdist(i,2,element) = S.Tdist;
         
         if plotIt
-            plot(ColorsT, S.Tension2j, i, S, 2);
+            plot(S.ColorsT, S.Tension2j, i, S, 2);
         end
         
         taus = taus + S.tau;
@@ -93,7 +84,7 @@ if S.EXONET.nJoints == 2
     TAUs(i,2) = taus(1); % torque created by the knee-toe MARIONET on the knee
 end 
 
-if plotIt; figure(cf); end
+%if plotIt; figure(cf); end
 
 end
 
