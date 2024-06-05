@@ -4,9 +4,9 @@
 
 function S = tauMarionetLeg(S, i, flag)
 
-r = S.Parameters(1);
-theta = S.Parameters(2);
-L0 = S.Parameters(3);
+r = S.p(1);
+theta = S.p(2);
+L0 = S.p(3);
 
 if flag == 0 %1-joint
     phi = S.PHIs(i,3);

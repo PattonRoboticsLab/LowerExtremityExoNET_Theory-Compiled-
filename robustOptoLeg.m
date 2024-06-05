@@ -33,7 +33,6 @@ S.bestCost = 1e5;                      % best cost, initially high (10^16)
 costs = zeros(S.nTries,1);             % vector collecting the cost at each try
 
 S = exoNetTorquesLeg(S.bestP,S); % initial guess for the solution
-%TAUs = exoNetTorquesLeg(bestP,PHIs); % initial guess for the solution
 
 %% Set the plot
 clf % to reset the figure
