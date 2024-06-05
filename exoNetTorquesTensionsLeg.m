@@ -37,7 +37,7 @@ if S.EXONET.nJoints == 22
         for element = 1:S.EXONET.nElements
         S = findParameters(S.ankleIndex, p, element, S);
         S = tauMarionetLeg(S, i, 1);
-        S.EXONET.tau(i,1,element) = S.tau(element);
+        S.EXONET.tau(i,1,element) = S.tau(2);
         S.EXONET.T(i,1,element) = S.T;
         S.EXONET.Tdist(i,1,element) = S.Tdist;
         
@@ -70,7 +70,7 @@ if S.EXONET.nJoints == 2
     for element = 1:S.EXONET.nElements
         S = findParameters(S.kneeFootIndex,p, element, S);
         S = tauMarionetLeg(S, i, 1);
-        S.EXONET.tau(i,2,element) = S.tau(element);
+        S.EXONET.tau(i,2,element) = S.tau(2);
         S.EXONET.T(i,2,element) = S.T;
         S.EXONET.Tdist(i,2,element) = S.Tdist;
         
