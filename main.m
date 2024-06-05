@@ -49,7 +49,7 @@ switch fieldType
         
 end % end switch
 
-GitCommit('testing push')
+GitCommit('commit changes')
 
 fprintf('\n END MAIN SCRIPT~~\n')
 
