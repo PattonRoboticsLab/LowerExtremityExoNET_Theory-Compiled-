@@ -2,23 +2,19 @@
 
 function GitCommit(message)
 % CHECKS
-    % Check if Git is installed
-    [status, ~] = system('git --version');
-    if status ~= 0
-        error('Git is not installed or not in the system path.');
+[status1, cmdout1] = system('git --version');         % Check if Git is installed
+status2 = ~exist('.git', 'dir');                      % Check if .git directory exists to confirm it's a Git repository
+[status3, cmdout3] = system('git config user.email'); % Get user email associated with Git to confirm configuration
+
+if status1 ~= 0 || status2 ~= 0 || status3 ~= 0
+    if status1 ~= 0
+        disp(cmdout1);
+    elseif status2 ~= 0
+        disp('.git directory does not exist.');
+    elseif status3 ~= 0
+        disp(cmdout3);
     end
-    
-    % Check if .git directory exists to confirm it's a Git repository
-    if ~exist('.git', 'dir')
-        error('Local Git repository does not exist.');
-    end
-    
-    % Get user email associated with Git to confirm configuration
-    [status, ~] = system('git config user.email');
-    if status ~= 0
-        error('No email is associated with Git.');
-    end
-    
+end
 %=========================================================================% 
     % If all checks pass:
     system('git pull') %pull any recent changes from online
