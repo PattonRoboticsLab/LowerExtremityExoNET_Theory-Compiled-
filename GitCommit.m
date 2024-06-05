@@ -1,36 +1,41 @@
-%This script is to run during your code that will commit and push all
-%changes to current branch in Github
+% This script commits and pushes all changes to the current branch in a GitHub repository.
 
 function GitCommit(message)
-%CHECKS
+% CHECKS
     % Check if Git is installed
     [status, ~] = system('git --version');
     if status ~= 0
         error('Git is not installed or not in the system path.');
     end
-    % Check if .git directory exists
+    
+    % Check if .git directory exists to confirm it's a Git repository
     if ~exist('.git', 'dir')
-        disp('Local Git repository does not exist.');
+        error('Local Git repository does not exist.');
     end
-    % Get user email associated with Git
+    
+    % Get user email associated with Git to confirm configuration
     [status, ~] = system('git config user.email');
     if status ~= 0
-        disp('No email is associated with Git');
+        error('No email is associated with Git.');
     end
+    
 %=========================================================================%    
-    %If all checks pass:
-    system('git add .'); % Add all files to the Git repository
+    % If all checks pass:
+    system('git add .'); % Add all files to the staging area for commit
     
-    command = ['git commit -m "' message '"']; % Commit the changes
-    system(command); 
+    % Construct the Git commit command with the provided message
+    command = ['git commit -m "' message '"']; 
+    system(command); % Execute the commit command
     
-    [~ , currBranch] = system('git rev-parse --abbrev-ref HEAD');
-    currBranch = strtrim(currBranch);
+    % Get the name of the current branch
+    [~, currBranch] = system('git rev-parse --abbrev-ref HEAD');
+    currBranch = strtrim(currBranch); % Remove any leading/trailing whitespace
     
-    % Ask user if they want to push changes to currBranch (Y/N)
-    pushCurrBranch = input(['Do you want to push changes to current branch: ', currBranch, '? (Y/N): '], 's');
+    % Ask the user if they want to push changes to the current branch
+    pushCurrBranch = input(['Do you want to push changes to the current branch: ', currBranch, '? (Y/N): '], 's');
     if strcmpi(pushCurrBranch, 'Y')
-        system('git push -u origin HEAD'); % Push the committed changes to the current branch
+        % Push the committed changes to the current branch on the remote repository
+        system('git push -u origin HEAD'); 
         disp(['Changes pushed to branch ', currBranch]);
     else
         % List all available branches
@@ -44,10 +49,10 @@ function GitCommit(message)
             disp([num2str(i), ': ', branches{i}]);
         end
         
-        % Ask the user if they want to push changes to any available branch
+        % Ask the user if they want to push changes to any other available branch
         pushOtherBranch = input('Do you want to push changes to any other available branch? (Y/N): ', 's');
         if strcmpi(pushOtherBranch, 'Y')
-            % Prompt the user to select a branch
+            % Prompt the user to select a branch by index number
             branchIndex = input('Enter the index number of the branch to push changes to: ');
             
             % Validate the input
@@ -55,7 +60,7 @@ function GitCommit(message)
                 branchName = branches{branchIndex};
                 % Switch to the selected branch
                 system(['git checkout ', branchName]);
-                % Push changes to the selected branch
+                % Push changes to the selected branch on the remote repository
                 system(['git push -u origin ', branchName]);
                 disp(['Changes pushed to branch ', branchName]);
             else
@@ -65,15 +70,4 @@ function GitCommit(message)
             disp('No changes were pushed.');
         end
     end
-    %ask user if they want to push changes to currBranch (Y/N)
-    %if yes, perform next line  
-    
-    %system('git push -u origin HEAD'); % Push the committed changes to the 'master' branch
-    
-    %if no, list all avaiable branches. ask user if they want to push
-    %changes to any available branch (Y/N)
-    
-    %if yes, push changes to selected branch index
-    
-    %if no, disp no changes were pushed. 
 end
