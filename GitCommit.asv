@@ -21,14 +21,14 @@ function GitCommit(message)
     %If all checks pass:
     system('git add .'); % Add all files to the Git repository
     
-    command = ['git commit -m message']; % Commit the changes
+    command = ['git commit -m ' message]; % Commit the changes
     system(command); 
     
     [~ , currBranch] = system('git rev-parse --abbrev-ref HEAD');
     currBranch = strtrim(currBranch);
     
-        % Ask user if they want to push changes to currBranch (Y/N)
-    pushCurrBranch = input(['Do you want to push changes to current branch ', currBranch, '? (Y/N): '], 's');
+    % Ask user if they want to push changes to currBranch (Y/N)
+    pushCurrBranch = input(['Do you want to push changes to current branch: ', currBranch, '? (Y/N): '], 's');
     if strcmpi(pushCurrBranch, 'Y')
         system('git push -u origin HEAD'); % Push the committed changes to the current branch
         disp(['Changes pushed to branch ', currBranch]);
@@ -53,6 +53,8 @@ function GitCommit(message)
             % Validate the input
             if isscalar(branchIndex) && branchIndex >= 1 && branchIndex <= numel(branches)
                 branchName = branches{branchIndex};
+                % Switch to the selected branch
+                system(['git checkout ', branchName]);
                 % Push changes to the selected branch
                 system(['git push -u origin ', branchName]);
                 disp(['Changes pushed to branch ', branchName]);
@@ -66,7 +68,7 @@ function GitCommit(message)
     %ask user if they want to push changes to currBranch (Y/N)
     %if yes, perform next line  
     
-    system('git push -u origin HEAD'); % Push the committed changes to the 'master' branch
+    %system('git push -u origin HEAD'); % Push the committed changes to the 'master' branch
     
     %if no, list all avaiable branches. ask user if they want to push
     %changes to any available branch (Y/N)
