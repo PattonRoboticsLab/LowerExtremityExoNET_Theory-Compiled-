@@ -107,7 +107,7 @@ costs(TRY+1) = c; % vector collecting the cost at each try
 %% Update the plots
 % Draw the ExoNET and plot the torques
 clf % to reset the figure
-figure('WindowState', 'maximized');
+set(gcf,'WindowState', 'maximized');
 subplot(1,2,1)
 
 if S.case == 1.1

@@ -3,7 +3,6 @@
 % ***********************************************************************
 function S = drawExonetsLeg(p,S)
 fprintf('\n\n\n\n Drawing MARIONETs~~\n')
-legendLabels = cell(1, S.EXONET.nElements);  % Preallocate legendLabels cell array
 
 S = drawVars(S); %Determine the variables needed to draw exonets
 
@@ -86,21 +85,13 @@ if S.end == true
     
     fprintf('\n\n\n\n The Optimal Parameters for each Element are~~\n')
     n = 1;
+    
     for i = 1:3:length(ppp)  % to print the values of the optimal parameters
         fprintf('\n Element %d\n',n)
         fprintf('\n r = %4.3f m   theta = %4.2f deg   L0 = %4.3f m\n',ppp(i),ppp(i+1),ppp(i+2))
-        S.p(n,:) = ppp(i:i+2);
+        S.p(n,:) = ppp(i:i+2);        
         n = n+1;
     end
-    lenElement = size(S.p);
-    i = 1;
-    while i <= lenElement(1,1)      
-        % Assuming S is a struct containing Parameters for each element
-        Label = sprintf('%s: r = %.3f m, theta = %.2f deg, L = %.3f m', num2str(i), S.p(i,1), S.p(i,2), S.p(i,3));
-        legendLabels{i} = [Label, newline]; % Combine labels with newline
-        i = i + 1;
-    end
-    legend(legendLabels, 'Location', 'best'); % Display legend
 end
         
 fprintf('\n\n\n\n Done drawing~~\n')
