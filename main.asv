@@ -9,13 +9,9 @@
 % ***********************************************************************
 clear;clc;close all;
 
+Path1 = 'C:\Users\loshea\MATLAB\GitCommit';
 Path1 = '\\fs2.smpp.local\SMULAB2\Leah Summer 2021\RoboLab\GitHub\LowerExtremityExoNET_Theory_Compiled';
-Path2 = 'C:\Users\loshea\MATLAB\GitCommit';
 addpath(Path1)
-cd(Path2)
-!git pull
-cd(Path1)
-
 % BEGIN
 fprintf('\n\n\n\n MAIN SCRIPT~~\n')
 disp('Choose from the menu...')
