@@ -8,8 +8,11 @@
 % reference data for healthy young and adult subjects"
 % ***********************************************************************
 clear;clc;close all;
+%addpath('C:\Users\loshea\MATLAB')
+addpath '\\fs2.smpp.local\SMULAB2\Leah Summer 2021\RoboLab\GitHub\LowerExtremityExoNET_Theory_Compiled'
 % BEGIN
 fprintf('\n\n\n\n MAIN SCRIPT~~\n')
+GitCommit("Test")
 disp('Choose from the menu...')
 
 S.end = false;    %indication for last optimization 

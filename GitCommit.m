@@ -21,7 +21,7 @@ function GitCommit(message)
     %If all checks pass:
     system('git add .'); % Add all files to the Git repository
     
-    command = ['git commit -m message']; % Commit the changes
+    command = ('git commit -m message'); % Commit the changes
     system(command); 
     
     [~ , currBranch] = system('git rev-parse --abbrev-ref HEAD');
@@ -57,7 +57,7 @@ function GitCommit(message)
                 system(['git checkout ', branchName]);
                 % Push changes to the selected branch
                 system(['git push -u origin ', branchName]);
-                disp(['Changes pushed to branch ', branchName]);
+                disp(['Changes pushed to branch: ', branchName, 'with message: ', message]);
             else
                 disp('Invalid branch index.');
             end
